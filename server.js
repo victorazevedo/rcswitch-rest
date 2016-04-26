@@ -40,6 +40,6 @@ app.delete('/switches/:id', api.deleteSwitch);
 // console.log('Servidor Express iniciado na porta %s', server.address().port);
 
 // Start server
-app.listen(8000);
-console.log("Server running at in port 8000");
+app.listen(3000);
+console.log("Server running at in port 3000");
 
