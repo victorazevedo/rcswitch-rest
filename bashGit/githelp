@@ -1,0 +1,5 @@
+echo "
+gco 'mensagem significativa' ==> commita
+gp ==> manda
+gpl ==> pega
+"

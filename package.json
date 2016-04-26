@@ -1,12 +1,27 @@
 {
   "name": "rcswitch-rest",
-  "description": "RESTful API for rcswitch",
   "version": "1.0.0",
-  "private": true,
+  "description": "rcswitch-rest\r =============",
+  "main": "server.js",
   "dependencies": {
-    "express": "3.x",
-    "exec": "0.0.5",
-    "sleep": "1.1.0",
-    "onoff": "~1.0.4"
-  }
+    "exec": "^0.0.5",
+    "sleep": "^1.1.0",
+    "express": "^3.21.2",
+    "onoff":"*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorazevedo/rcswitch-rest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorazevedo/rcswitch-rest/issues"
+  },
+  "homepage": "https://github.com/victorazevedo/rcswitch-rest#readme"
 }
