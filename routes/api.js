@@ -4,31 +4,35 @@ var exec = require('child_process').exec;
 var sleep = require('sleep');
 
 var data = [{
-    "id": "0",
+    "id": "A01",
     "status": false,
     "url": "/switches/0",
     "name": "lâmpada do quarto",
+    "pin":20,
     "script": "sudo /home/pi/rcswitch-pi/sendRev",
     "command": "B 0",
 }, {
-    "id": "1",
+    "id": "A02",
     "status": false,
     "url": "/switches/1",
     "name": "lâmpada da sala",
+    "pin":21,
     "script": "sudo /home/pi/rcswitch-pi/sendRev",
     "command": "B 1",
 }, {
-    "id": "2",
+    "id": "A03",
     "status": false,
     "url": "/switches/2",
     "name": "TV do quarto",
+    "pin":26,
     "script": "sudo /home/pi/rcswitch-pi/sendRev",
     "command": "B 2",
 }, {
-    "id": "3",
+    "id": "A04",
     "status": false,
     "url": "/switches/3",
     "name": "TV da sala",
+    "pin":-1,
     "script": "sudo /home/pi/rcswitch-pi/sendRev",
     "command": "B 3",
 }];
@@ -60,14 +64,13 @@ exports.addSwitch = function(req, res) {
 
 // PUT
 exports.editSwitch = function(req, res) {
-    var id = req.params.id;
-    console.log('SERVER side - edit switch' + id);
-    if (id >= 0 && id <= data.length) {
-        console.log('Switch Status of switch with id: ' + id + " to " + req.body.status);
-        var script = data[id].script;
-        var command = data[id].command;
-        switchStatus(script, command, req.body.status);
-        data[id].status = req.body.status;
+    var index = data.map(function(x) {return x.name }).indexOf(req.body.name);
+    var pin = data[index].pin;
+    console.log('Changing:\nid: ' + req.params.id + " status: " + req.body.status + ' RPI pin: '+ pin);
+    if (pin !=-1) {
+        if(req.body.status == true) switchStatus(pin,1);
+        else if(req.body.status == false) switchStatus(pin,0);
+        data[index].status = req.body.status;
         res.send(200);
     } else {
         res.json(404);
@@ -100,11 +103,11 @@ exports.deleteSwitch = function(req, res) {
 };
 
 
-function switchStatus(script, command, status) {
-    var execString = script + " " + command + " " + status;
-    console.log("Executing: " + execString);
-    exec(execString, puts);
-    sleep.sleep(1) //sleep for 1 seconds
+function switchStatus(pin,zeroOne) {
+    console.log('pin:'+pin+' status:'+zeroOne);
+    var GPIO = require('onoff').Gpio;
+    var led = new GPIO(pin, 'out');
+    led.writeSync(zeroOne);
 }
 
 function puts(error, stdout, stderr) {
@@ -112,27 +115,3 @@ function puts(error, stdout, stderr) {
     console.warn("Executing Done");
 }
 
-
-// app.get('/:pin', function(req, res){
-//   var pin = req.params.pin;
-
-//   gpio.open(pin, 'input', function(err) {
-//     gpio.read(pin, function(err, value) {
-//       res.send(200, {value: value});
-//       gpio.close(pin);
-//     });
-//   });
-// });
-
-// app.put('/:pin', function(req, res) {
-//   var pin = req.params.pin;
-//   var value = req.body.value;
-
-//   gpio.open(pin, 'output', function(err) {
-//     gpio.write(pin, value, function(err) {
-//       res.send(200);
-//       gpio.close(pin);
-//     });
-//   });
-// });
-// https://github.com/rakeshpai/pi-gpio
