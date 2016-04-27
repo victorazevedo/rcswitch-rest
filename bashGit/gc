@@ -1,4 +1,0 @@
-# caso apareça algo que não se deseje controlar versão, adicione no .gitignore git status # executar somente se alterou o .gitignore
-git add -A . #adiciona no controle novos arquivos e deleção
-git commit -m "$1" 
-git status # verifica o que foi modificado
